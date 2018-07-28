@@ -146,7 +146,7 @@ const windWidth = 800;
 const windHeight = 400;
 
 class nnVis {
-    constructor(net) {
+    constructor(net) {  // takes a neuralNet object as input
         this.nodesArr = net.nodesArr;
         this.numLayers = this.nodesArr.length;
         this.nodes = [];
@@ -155,7 +155,7 @@ class nnVis {
         this.genConnections();
     }
 
-    genNodes() {
+    genNodes() {    // initializes the nodes for a neuralNet
         var startXPos = 0;
         var startYPos = begHeight + 50;
         var endXPos = 400;
@@ -183,7 +183,7 @@ class nnVis {
         this.nodes = nodes;
     }
 
-    genConnections() {
+    genConnections() {  // initiazes the connections for a neuralNet
         let con = [];
         for (let i = 0; i < this.nodes.length-1; i++) {
             let layerCon = [];
@@ -206,7 +206,7 @@ class nnVis {
         this.connections = con;
     }
 
-    showNodes() {
+    showNodes() {   // draws the nodes on the canvas
         for(var i = 0; i < this.nodes.length; i++) {
             for(var j = 0; j < this.nodes[i].length; j++){
                 fill(this.nodes[i][j][3], this.nodes[i][j][4], this.nodes[i][j][5]);
@@ -215,7 +215,7 @@ class nnVis {
         }
     }
 
-    showConnections() {
+    showConnections() { // draws the connections in between the nodes
         for (let i = 0; i < this.connections.length; i++) {
             for (let j = 0; j < this.connections[i].length; j++) {
                 for (let n = 0; n < this.connections[i][j].length; n++) {
@@ -232,21 +232,21 @@ class nnVis {
         }
     }
 
-    showLayerActivations(layerActivations) {
+    showLayerActivations(layerActivations) {    // changes color of nodes based on how activated they are
         for(var i = 1; i < this.nodes.length; i++) {
             for(var j = 0; j < this.nodes[i].length; j++) {
-                this.nodes[i][j][3] = 255*(math.max(0, 1-layerActivations[i-1]._data[j]));
+                // this.nodes[i][j][3] = 255*(math.max(0, 1-layerActivations[i-1]._data[j]));
                 this.nodes[i][j][4] = 255*(math.max(0, 1-layerActivations[i-1]._data[j]));
-                //this.nodes[i][j][5] = 255*(math.max(0, 1-layerActivations[i-1]._data[j]));
+                this.nodes[i][j][5] = 255*(math.max(0, 1-layerActivations[i-1]._data[j]));
             }
         }
     }
 
-    showInputActivations(inputActivations) {
+    showInputActivations(inputActivations) {    // changes color of input nodes based on input values
         for(var j = 0; j < this.nodes[0].length; j++) {
-            this.nodes[0][j][3] = 255*(math.max(0, 1 - inputActivations[j][0]));
+            // this.nodes[0][j][3] = 255*(math.max(0, 1 - inputActivations[j][0]));
             this.nodes[0][j][4] = 255*(math.max(0, 1 - inputActivations[j][0]));
-            //this.nodes[0][j][5] = 255*(math.min(1, 0 + inputActivations[j][0]));
+            this.nodes[0][j][5] = 255*(math.max(0, 1 - inputActivations[j][0]));
 
         }
     }

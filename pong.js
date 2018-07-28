@@ -241,14 +241,10 @@ class Pong {
 		    if (this.puck.leftWon()) { 
                 this.pad1.setScore(this.pad1.getScore()+1); 
                 this.scoreBoard.setLeft(this.scoreBoard.leftScore+1);
-            }
-		    else {
-                this. pad2.setScore(this.pad2.getScore()+1); 
-                this.scoreBoard.setRight(this.scoreBoard.rightScore+1);
 
-                this.pad2.net = this.generation.pop[this.memberCount-1];
+                
 
-                if (this.memberCount > this.generation.pop.length) {
+                if (this.memberCount >= this.generation.pop.length) {
                     let sum = this.gameTimes.reduce(function(a, b) { return a + b; });
                     let avg = sum / this.gameTimes.length;
                     this.genTimes.push(avg);
@@ -258,11 +254,19 @@ class Pong {
     
                     let net1 = this.generation.pop[ind1];
                     let net2 = this.generation.pop[ind2];
-                    this.generation = Generation.genFromGen(net1, net2, this.generation.popSize, this.generation.genNum+1, .1);
+                    this.generation = Generation.genFromGen(net1, net2, this.generation.popSize, this.generation.genNum+1, .05);
                     this.gameTimes = [];
-                    this.memberCount = 1;
+                    this.memberCount = 0;
+                    this.pad2.net = this.generation.pop[0];
+                }
+
+                else {
                     this.pad2.net = this.generation.pop[this.memberCount-1];
                 }
+            }
+		    else {
+                this. pad2.setScore(this.pad2.getScore()+1); 
+                this.scoreBoard.setRight(this.scoreBoard.rightScore+1);
             }
             this.endTime = millis();
             this.gameTime = this.endTime - this.startTime;

@@ -18,7 +18,7 @@ function setup() {
 	createCanvas(800, 800);
 	topBuffer = createGraphics(800, 400);
 	botBuffer = createGraphics(800, 400);
-	generation = new Generation([5, 4, 4, 4, 3], 50, 1);
+	generation = new Generation([5, 6, 6, 6, 3], 50, 1);
 	generation.initializeNets(); 
 	pong = new Pong(generation);
 }
@@ -31,6 +31,8 @@ function draw() {
 
 	strokeWeight(0);
 	pong.playPong();
+
+	labels();
 
 	times = pong.getGenerationTimes();
 	if (times != []) {
@@ -51,8 +53,6 @@ function draw() {
 		}
 		endShape();
 	}
-
-	labels();
 }
 
 function keyPressed() {
@@ -78,7 +78,7 @@ function drawTopBuffer() {
 }
 
 function drawBotBuffer() {
-	botBuffer.background(205, 205, 205);
+	botBuffer.background(255, 255, 255);
 }
 
 function labels() {
@@ -95,4 +95,9 @@ function labels() {
 	text('up', 325, 495, 400, 520);
 	text('neutral', 325, 585, 400, 630);
 	text('down', 325, 670, 400, 680);
+	stroke(150, 150, 255, 127);
+	for (let i = 450; i <= 750; i+=50) {
+		line(i, 450, i, 800);
+		line(400, i, 800, i);
+	}
 }
