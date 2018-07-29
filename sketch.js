@@ -11,14 +11,14 @@ function preload() {
   myFont = loadFont('assets/unisansthin.otf');
 }
 
-// passable parameters: nn depeth, # of hidden nodes per layr,
+// passable parameters: nn depth, # of hidden nodes per layr,
 // population size, mutation rate
 
 function setup() {
 	createCanvas(800, 800);
 	topBuffer = createGraphics(800, 400);
 	botBuffer = createGraphics(800, 400);
-	generation = new Generation([5, 6, 6, 6, 3], 50, 1);
+	generation = new Generation([5, 4, 4, 4, 3], 50, 1, .05);
 	generation.initializeNets(); 
 	pong = new Pong(generation);
 }

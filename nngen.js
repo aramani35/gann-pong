@@ -1,3 +1,6 @@
+// Method for constructing a neural network with forward prop only.
+// As the pong player is a gann, there is no supervized learning,
+// and therefore no use for back propagation
 class neuralNet {
     constructor(arrN) {
         this.nodesArr = arrN;
@@ -56,12 +59,15 @@ class neuralNet {
     }
 }
 
+// class for constructing a layer of a neural net based on an input
+// and output size
 class layer {
     constructor(numInputs, numOutputs) {
         this.weightMatrix = math.zeros(numOutputs, numInputs);
         this.biasVector = math.zeros(numOutputs, 1);
     }
 
+    // randomizes value of weights
     randomInitialization() {
         this.weightMatrix = this.weightMatrix.map(function() {
             return math.random(-1, 1);
@@ -78,6 +84,8 @@ class layer {
         console.table(this.biasVector._data);
     }
 
+    // forward propagation through a layer, returns softmax activation
+    // for output layer and softmax for all other layers
     forwardProp(inputVec, activation) {
         let z = math.add(math.multiply(this.weightMatrix, inputVec), this.biasVector);
         if (activation == 'relu') {
@@ -99,6 +107,7 @@ class layer {
         }
     } 
 
+    // method for crossing over two layers (weight matrix and biases)
     static crossLayers(lay1, lay2, crossPoint, mutationRate) {
         let crossedLay = new layer(
             math.size(lay1.weightMatrix)._data[1], 
@@ -141,10 +150,13 @@ class layer {
     }
 }
 
+// variables used for positioning
 const begHeight = 400;
 const windWidth = 800;
 const windHeight = 400;
 
+
+// class for constructing nn visualization
 class nnVis {
     constructor(net) {  // takes a neuralNet object as input
         this.nodesArr = net.nodesArr;

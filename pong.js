@@ -1,5 +1,7 @@
+// defines how fast pong runs
 const mult = 2;
 
+// class for the puck in pong
 class Puck {
     constructor() {
         this.r = 20;
@@ -68,6 +70,7 @@ class Puck {
     }
 }
 
+// initializes basic parameters of a paddle
 class Paddle {
     constructor(left) {
         this.left = left;
@@ -96,6 +99,8 @@ class Paddle {
     }
 }
 
+// a player paddle can either take human input or perfectly follow
+// the ball (toggle-able)
 class playerPaddle extends Paddle {
     constructor(left) {
         super(left);
@@ -132,6 +137,8 @@ class playerPaddle extends Paddle {
     }
 }
 
+// an nn paddle uses a neural net to determine whether it should
+// move up, down, or neutral
 class nnPaddle extends Paddle {
     constructor(left, netDim) {
         super(left);
@@ -164,6 +171,7 @@ class nnPaddle extends Paddle {
     }
 }
 
+// simple class holding score values
 class scoringSystem {
     constructor() {
         this.leftScore = 0;
@@ -188,11 +196,13 @@ class scoringSystem {
     }
 }
 
+// initializes all the elements needed for pong and the method
+// to start pong
 class Pong {
     constructor(generation) {
         this.puck = new Puck();
         this.pad1 = new playerPaddle(true);
-        this.generation = generation;
+        this.generation = generation; // takes in a generation of nets
         this.pad2 = new nnPaddle(false, generation.nodesArr);
         this.begin = false;
         this.scoreBoard = new scoringSystem();
@@ -254,7 +264,7 @@ class Pong {
     
                     let net1 = this.generation.pop[ind1];
                     let net2 = this.generation.pop[ind2];
-                    this.generation = Generation.genFromGen(net1, net2, this.generation.popSize, this.generation.genNum+1, .05);
+                    this.generation = Generation.genFromGen(net1, net2, this.generation.popSize, this.generation.genNum+1);
                     this.gameTimes = [];
                     this.memberCount = 0;
                     this.pad2.net = this.generation.pop[0];
