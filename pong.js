@@ -252,19 +252,18 @@ class Pong {
                 this.pad1.setScore(this.pad1.getScore()+1); 
                 this.scoreBoard.setLeft(this.scoreBoard.leftScore+1);
 
-                
-
                 if (this.memberCount >= this.generation.pop.length) {
-                    let sum = this.gameTimes.reduce(function(a, b) { return a + b; });
-                    let avg = sum / this.gameTimes.length;
-                    this.genTimes.push(avg);
+                    
                     let ind1 = this.gameTimes.indexOf(math.max(this.gameTimes));
                     this.gameTimes.splice(ind1, 1);
                     let ind2 = this.gameTimes.indexOf(math.max(this.gameTimes));
-    
                     let net1 = this.generation.pop[ind1];
                     let net2 = this.generation.pop[ind2];
                     this.generation = Generation.genFromGen(net1, net2, this.generation.popSize, this.generation.genNum+1);
+                    
+                    let sum = this.gameTimes.reduce(function(a, b) { return a + b; });
+                    let avg = sum / this.gameTimes.length;
+                    this.genTimes.push(avg);
                     this.gameTimes = [];
                     this.memberCount = 0;
                     this.pad2.net = this.generation.pop[0];
