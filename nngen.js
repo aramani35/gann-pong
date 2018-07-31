@@ -7,7 +7,7 @@ class neuralNet {
         this.layers = [];
     }
 
-    initLayers() {
+    initLayers() { // random initialization of layers
         for (let i = 0; i < this.nodesArr.length-1; i++) {
             let lay = new layer(this.nodesArr[i], this.nodesArr[i+1]);
             lay.randomInitialization();
@@ -15,7 +15,7 @@ class neuralNet {
         }
     }
 
-    feedforward(inputArr) {
+    feedforward(inputArr) { // feed forward to get activation values for each layer
         if (inputArr.length != this.nodesArr[0]) {
             console.log('Incorrect input size');
         }
@@ -34,7 +34,7 @@ class neuralNet {
         }
     }
 
-    print() {
+    print() {   // prints values inside the net
         for (var i = 0; i < this.layers.length; i++) {
             console.log('LAYER ' + String(i+1));
             this.layers[i].print();
@@ -48,10 +48,32 @@ class neuralNet {
 
         else {
             let newNet = new neuralNet(nn1.nodesArr);
-            for (let i = 0; i < newNet.nodesArr.length-1; i++) {
-                let crossPoint = math.floor(math.random()*newNet.nodesArr[i+1]);
-                let newLay = layer.crossLayers(nn1.layers[i], nn2.layers[i], crossPoint, mutationRate);
-                newNet.layers.push(newLay);
+
+            // METHOD 1: crosses all layer values (intensive, maybe results in a lot of useless crossoever)
+            // for (let i = 0; i < newNet.nodesArr.length-1; i++) {
+            //     let crossPoint = math.floor(math.random()*newNet.nodesArr[i+1]);
+            //     let newLay = layer.crossLayers(nn1.layers[i], nn2.layers[i], crossPoint, mutationRate);
+            //     newNet.layers.push(newLay);
+            // }
+
+            // METHOD 2: crosses the nets themselves each layer stays as it was
+            let crossPoint = 1 + math.floor(math.random() * (newNet.nodesArr.length - 1));
+            for (let i = 1; i < newNet.nodesArr.length; i++) {
+                if (math.random() < mutationRate) {
+                    let lay = new layer(
+                        newNet.nodesArr[i - 1], newNet.nodesArr[i]
+                    );
+                    lay.randomInitialization;
+                    newNet.layers.push(lay);
+                }
+
+                else if (i <= crossPoint) {
+                    newNet.layers.push(nn1.layers[i - 1]);
+                }
+
+                else {
+                    newNet.layers.push(nn2.layers[i - 1]);
+                }
             }
 
             return newNet;

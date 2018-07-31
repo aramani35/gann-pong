@@ -161,10 +161,10 @@ class nnPaddle extends Paddle {
         })
         this.yPos += mult*4*dir;
 
-        this.vis.showInputActivations(input);
-        this.vis.showLayerActivations(activationVals);
-        this.vis.showConnections();
-        this.vis.showNodes();
+        // this.vis.showInputActivations(input);
+        // this.vis.showLayerActivations(activationVals);
+        // this.vis.showConnections();
+        // this.vis.showNodes();
 
         if (this.yPos < 0) { this.yPos = 0; }
         else if (this.yPos + this.l > windHeight) { this.yPos = windHeight - this.l; }
@@ -212,7 +212,7 @@ class Pong {
         this.gameTimes = [];
         this.genTimes = [];
         this.memberCount = 1;
-        this.mutRate - this.generation.mutationRate;
+        this.mutRate = this.generation.mutationRate;
     }
 
     setBegin(beg) {
@@ -249,29 +249,32 @@ class Pong {
 	    this.pad1.show(0, 150, 255, 255);
 
 	    if (this.puck.getOut()) {
-            this.endTime = millis();
-            this.gameTime = this.endTime - this.startTime;
-            this.gameTimes.push(this.gameTime);
 
 		    if (this.puck.leftWon()) { 
                 this.pad1.setScore(this.pad1.getScore()+1); 
                 this.scoreBoard.setLeft(this.scoreBoard.leftScore+1);
 
+                this.endTime = millis();
+                this.gameTime = this.endTime - this.startTime;
+                this.gameTimes.push(this.gameTime);
+
                 if (this.memberCount >= this.generation.pop.length) {
                     this.genTimes.push(math.max(this.gameTimes));
 
-                    //let sum = this.gameTimes.reduce(function(a, b) { return a + b; });
+                    // let sum = this.gameTimes.reduce(function(a, b) { return a + b; });
                     // let avg = sum / this.gameTimes.length;
                     // this.genTimes.push(avg);
 
                     let ind1 = this.gameTimes.indexOf(math.max(this.gameTimes));
                     this.gameTimes.splice(ind1, 1);
                     let ind2 = this.gameTimes.indexOf(math.max(this.gameTimes));
-                    let net1 = this.generation.pop[ind1];
-                    let net2 = this.generation.pop[ind2];
+                    let net1 = this.generation.pop[ind1 + 1];
+                    let net2 = this.generation.pop[ind2 + 1];
+
+                    
 
                     this.generation = Generation.genFromGen(net1, net2, this.generation.popSize, this.generation.genNum+1, this.mutRate);
-                    this.generation.pop[0] = net1;
+                    this.generation.pop[this.generation.pop.length-1] = net1;
                     this.generation.pop[1] - net2;
                     this.gameTimes = [];
                     this.memberCount = 0;

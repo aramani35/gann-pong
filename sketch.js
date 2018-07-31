@@ -18,7 +18,7 @@ function setup() {
 	createCanvas(800, 800);
 	topBuffer = createGraphics(800, 400);
 	botBuffer = createGraphics(800, 400);
-	generation = new Generation([5, 4, 4, 4, 3], 50, 1, .01);
+	generation = new Generation([5, 2, 2, 3], 50, 1, .1);
 	generation.initializeNets(); 
 	pong = new Pong(generation);
 }
