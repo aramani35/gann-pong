@@ -20,11 +20,11 @@ class Generation {
     }
 
     // initializes new nets based on two best nets from passed in gen
-    static genFromGen(nn1, nn2, popSize, genNum) {
+    static genFromGen(nn1, nn2, popSize, genNum, mutationRate) {
         let newGen = new Generation(nn1.nodesArr, popSize, genNum);
         for (let i = 0; i < newGen.popSize; i++) {
             newGen.pop.push(
-                neuralNet.crossover(nn1, nn2, this.mutationRate)
+                neuralNet.crossover(nn1, nn2, mutationRate)
             );
         }
         return newGen;

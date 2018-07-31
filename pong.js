@@ -1,5 +1,5 @@
 // defines how fast pong runs
-const mult = 2;
+const mult = 1.5;
 
 // class for the puck in pong
 class Puck {
@@ -212,6 +212,7 @@ class Pong {
         this.gameTimes = [];
         this.genTimes = [];
         this.memberCount = 1;
+        this.mutRate - this.generation.mutationRate;
     }
 
     setBegin(beg) {
@@ -248,22 +249,30 @@ class Pong {
 	    this.pad1.show(0, 150, 255, 255);
 
 	    if (this.puck.getOut()) {
+            this.endTime = millis();
+            this.gameTime = this.endTime - this.startTime;
+            this.gameTimes.push(this.gameTime);
+
 		    if (this.puck.leftWon()) { 
                 this.pad1.setScore(this.pad1.getScore()+1); 
                 this.scoreBoard.setLeft(this.scoreBoard.leftScore+1);
 
                 if (this.memberCount >= this.generation.pop.length) {
-                    
+                    this.genTimes.push(math.max(this.gameTimes));
+
+                    //let sum = this.gameTimes.reduce(function(a, b) { return a + b; });
+                    // let avg = sum / this.gameTimes.length;
+                    // this.genTimes.push(avg);
+
                     let ind1 = this.gameTimes.indexOf(math.max(this.gameTimes));
                     this.gameTimes.splice(ind1, 1);
                     let ind2 = this.gameTimes.indexOf(math.max(this.gameTimes));
                     let net1 = this.generation.pop[ind1];
                     let net2 = this.generation.pop[ind2];
-                    this.generation = Generation.genFromGen(net1, net2, this.generation.popSize, this.generation.genNum+1);
-                    
-                    let sum = this.gameTimes.reduce(function(a, b) { return a + b; });
-                    let avg = sum / this.gameTimes.length;
-                    this.genTimes.push(avg);
+
+                    this.generation = Generation.genFromGen(net1, net2, this.generation.popSize, this.generation.genNum+1, this.mutRate);
+                    this.generation.pop[0] = net1;
+                    this.generation.pop[1] - net2;
                     this.gameTimes = [];
                     this.memberCount = 0;
                     this.pad2.net = this.generation.pop[0];
@@ -277,11 +286,9 @@ class Pong {
                 this. pad2.setScore(this.pad2.getScore()+1); 
                 this.scoreBoard.setRight(this.scoreBoard.rightScore+1);
             }
-            this.endTime = millis();
-            this.gameTime = this.endTime - this.startTime;
-            this.gameTimes.push(this.gameTime);
+            
             this.startTime = millis();
-            if (this.pad1.humanPlay){ this.begin = false; }
+            // if (this.pad1.humanPlay) { this.begin = false; }
             this.pad2.yPos = windHeight/2 - this.pad2.l/2;
             this.memberCount++;
 
